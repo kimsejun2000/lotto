@@ -5,10 +5,14 @@ steps:
     docker build -t us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto:latest .
   automapSubstitutions: true
 
+- id: delay-20-seconds
+  name: 'delay'
+  script: |
+    sleep 20
+    
 - id: deploy-cloud-run
   name: 'gcr.io/cloud-builders/gcloud'
   script: |
-    sleep 20
     gcloud run deploy lotto --image us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto:latest --region us-west2 --platform managed --allow-unauthenticated
   
 images:
