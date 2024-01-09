@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="eng-ENG">
+
+<head>
+  <meta charset="UTF-8">
+  <title>lotto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Allerta|Bungee" rel="stylesheet">
+	<style type="text/css">
+		* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: auto;
+  width: 100vw;
+  background-color: #333366;
+  font-family: 'Allerta', sans-serif;
+}
+
+section {
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+  height: auto;
+  border: 4px solid gold;
+  padding-bottom: 15px;
+}
+
+@media (min-width: 1024px) {
+  section {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+h1,
+p {
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  color: #ffd229;
+  text-shadow: 3px 3px #998100;
+  font-family: 'Bungee', cursive;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+p {
+  font-size: 30px;
+}
+
+h3 {
+  color: #ffff99;
+  text-align: center;
+  text-shadow: 2px 2px #806c00;
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+
+article {
+  height: 90%;
+  width: 250px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 568px) {
+  article {
+    width: 450px;
+  }
+}
+
+.invisible {
+  display: none;
+}
+
+.board {
+  position: relative;
+  background-color: #ccac00;
+  width: 210px;
+  height: 210px;
+  border: 1px solid #ccac00;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.boardEl {
+  background-color: #1f3d7a;
+  width: 28px;
+  height: 28px;
+  color: #fefefe;
+  text-align: center;
+  font-size: 15px;
+  border: none;
+}
+
+.crossedOut {
+  background-color: #0f1f3d;
+}
+
+.startDraw {
+  background: gold;
+  border: none;
+  font-size: 20px;
+  font-weight: bolder;
+  color: #333366;
+  width: 100%;
+  height: 45px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+.ball {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  line-height: 35px;
+  color: #efefef;
+  font-weight: bold;
+  text-align: center;
+  transform: rotate(180deg);
+}
+
+.ball:nth-of-type(2n) {
+  align-self: flex-end;
+}
+
+.ball:nth-of-type(2n+1) {
+  align-self: flex-start;
+}
+
+.ball:first-of-type {
+  background-color: gold;
+  border: 1px solid #ccac00;
+}
+
+.ball:nth-of-type(2) {
+  background-color: hotpink;
+  border: 1px solid #ff369b;
+}
+
+.ball:nth-of-type(3) {
+  background-color: teal;
+  border: 1px solid #004d4d;
+}
+
+.ball:nth-of-type(4) {
+  background-color: #009900;
+  border: 1px solid #006600;
+}
+
+.ball:nth-of-type(5) {
+  background-color: #339999;
+  border: 1px solid #267373;
+}
+
+.ball:last-of-type {
+  background-color: #ff6633;
+  border: 1px solid #ff4000;
+}
+
+#ballContainer {
+  border: 2px solid #e6c200;
+  background-color: inherit;
+  transform: rotate(180deg);
+  border-bottom: none;
+  width: 52px;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resultsBoard {
+  background-color: gold;
+  border: 3px solid #ccac00;
+  border-left: none;
+  border-right: none;
+  text-align: center;
+  height: 80px;
+  width: 100%;
+}
+
+.resultsBoard p {
+  color: #333366;
+  font-size: 30px;
+  font-family: 'Allerta', sans-serif;
+  text-shadow: none;
+}
+
+.comebackBtn {
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  margin-top: 15px;
+  font-size: 20px;
+  text-align: center;
+  background-color: #ffa05a;
+  text-decoration: none;
+  color: #333366;
+  border: 3px solid #ff8327;
+}
+
+.alertBox {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  color: #444488;
+  background-color: gold;
+  text-align: center;
+  line-height: 210px;
+  border: 4px solid #998100;
+}
+	</style>
+</head>
+
+<body>
+  <section>
+    <h1>Great lottery</h1>
+    <p>Win a million!</p>
+    <article class="lotto">
+      <h3>Cross out 6 numbers:</h3>
+    </article>
+    <article class="balls">
+      <h3>Balls:</h3>
+      <div id="ballContainer">
+        <div class="ball invisible"></div>
+        <div class="ball invisible"></div>
+        <div class="ball invisible"></div>
+        <div class="ball invisible"></div>
+        <div class="ball invisible"></div>
+        <div class="ball invisible"></div>
+      </div>
+    </article>
+  </section>
+	
+	<script>
+		document.addEventListener("DOMContentLoaded", function(e){
+    var body = document.querySelector("body");
+    var section = document.querySelector("section");
+    var articleLotto = document.querySelector(".lotto");
+    var articleBalls = document.querySelector(".balls");
+    var numbers = [];
+    var balls = document.getElementsByClassName("ball");
+    var drawnNums = [];
+    var chosenByMachine = [];
+    function createNumberBoard(number){
+    	console.log("I work");
+        var board = document.createElement("div");
+        board.classList.add("board");
+        articleLotto.appendChild(board);
+        for( var i = 0; i<number; i ++){
+            var boardEl = document.createElement("button");
+            boardEl.classList.add("boardEl");
+            board.appendChild(boardEl);
+        }
+        var boardEls = document.getElementsByClassName("boardEl");
+        for( var i =0; i<boardEls.length; i++){
+            boardEls[i].setAttribute("data-number", i+1);
+            var dataNumber = boardEls[i].getAttribute("data-number");
+            var number = parseInt(dataNumber, 10);
+            numbers.push(number);
+            boardEls[i].textContent = number;
+        }
+    }
+    createNumberBoard(49); 
+
+    var board = document.querySelector(".board");
+    var boardEls = document.querySelectorAll(".boardEl");
+    function drawNumbers(){
+        //boardEls.forEach(boardEl => boardEl.addEventListener("click", selectNums));
+        for (var i = 0; i<boardEls.length; i++){
+        	boardEls[i].addEventListener("click", selectNums);
+        }
+        function selectNums(){
+            var number = parseInt(this.dataset.number, 10);
+            if(this.hasAttribute("data-number")){
+                drawnNums.push(number);
+                this.removeAttribute("data-number");
+                this.classList.add("crossedOut");
+            } 
+            if(drawnNums.length=== 6){
+                //boardEls.forEach( boardEl => boardEl.removeAttribute("data-number")); 
+
+                //boardEls.forEach(boardEl => boardEl.addEventListener("click", makeAlert));
+                for ( var i = 0; i<boardEls.length; i++){
+                	boardEls[i].removeAttribute("data-number");
+                	boardEls[i].addEventListener("click", makeAlert);
+                }
+                var startDraw = document.querySelector(".startDraw");
+                if(startDraw === null){ // you have to prevent creating the button if it is already there!
+                    createButtonForMachineDraw();
+                } else {
+                    return;
+                }
+                
+
+            }
+            
+        }
+        
+        return drawnNums;
+
+    }
+    drawNumbers();
+
+    function makeAlert() {
+    	var alertBox = document.createElement("div");
+    	board.appendChild(alertBox);
+    	alertBox.classList.add("alertBox");
+    	alertBox.textContent = "you already chose 6!";
+    	
+    	setTimeout(function() {
+    		alertBox.parentNode.removeChild(alertBox);
+    	}, 1500);
+    	
+    }
+
+    function machineDraw(){
+        for( var i =0; i<6; i++){
+            var idx = Math.floor(Math.random() * numbers.length)
+            chosenByMachine.push(numbers[idx]);
+            /*a very important line of code which prevents machine from drawing the same number again 
+             */
+            numbers.splice(idx,1); 
+            console.log(numbers)
+            /*this line of code allows to check if numbers are taken out*/
+        }
+        var btnToRemove = document.querySelector(".startDraw");
+        
+        btnToRemove.classList.add("invisible"); 
+        /* why not remove it entirely? because it might then be accidentally created if for some reason you happen to try to click on board!!! and you may do that*/
+        return chosenByMachine;
+
+    }
+    //machineDraw();
+
+    function createButtonForMachineDraw(){
+    	var startDraw = document.createElement("button");
+    	startDraw.classList.add("startDraw");
+    	section.appendChild(startDraw);
+    	startDraw.textContent ="release the balls";
+    	startDraw.addEventListener("click", machineDraw);
+    	startDraw.addEventListener("click", compareArrays);
+    	
+    }
+
+    function compareArrays(){     
+        for( var i =0; i<balls.length; i++) {
+            balls[i].textContent = chosenByMachine[i];
+            (function() {
+            	var j = i;
+            	var f = function(){
+            		balls[j].classList.remove("invisible");
+            	}
+            	setTimeout(f, 1000*(j+1));
+            })();           
+        }
+        var common =[];
+        var arr1 = chosenByMachine;
+        var arr2 = drawnNums;
+            for(var i = 0; i<arr1.length; i++){
+                for(var j= 0; j<arr2.length; j++){
+                    if(arr1[i]===arr2[j]){ 
+                        common.push(arr1[i]);
+                    }
+                }
+            }
+            console.log(arr1, arr2, common); /* you can monitor your arrays in console*/
+            function generateResult(){
+                var resultsBoard = document.createElement("article");
+                section.appendChild(resultsBoard);
+                var paragraph = document.createElement("p");
+                resultsBoard.appendChild(paragraph);
+                resultsBoard.classList.add("resultsBoard");
+                resultsBoard.classList.add("invisible");
+                if( common.length===0){
+                    paragraph.textContent ="Oh, dear!  " + common.length + " balls and zero cash ";
+                } else if( common.length >0 && common.length< 3){
+                    paragraph.textContent ="Outta luck, only " + common.length + " , still no cash ";
+                } else if(common.length ===3) {
+                    paragraph.textContent ="Not bad, " + common.length + " , here's your twenty ";
+                } else if(common.length ===4){
+                    paragraph.textContent ="Not bad, " + common.length + " , here's your hundred ";
+                } else if( common.length ===5){
+                    paragraph.textContent ="Not bad, " + common.length + " , here's your thousand ";
+                }
+                else if(common.length===6){
+                    paragraph.textContent ="A true winner " + common.length + " here's your million";
+                }
+            }
+        setTimeout(function() {
+        	makeComebackBtn();
+        	document.querySelector(".resultsBoard").classList.remove("invisible"); //well, you cannot acces this outside the code
+        }, 8000);
+        generateResult();       
+    }
+    
+    function makeComebackBtn(){
+        var comebackBtn = document.createElement("a");
+        comebackBtn.classList.add("comebackBtn");
+        section.appendChild(comebackBtn);
+        comebackBtn.textContent ="again"
+        comebackBtn.setAttribute("href", "https://ewagrela.github.io/lottoIE/");
+    }
+    
+
+})
+	</script>
+</body>
+
+</html>
