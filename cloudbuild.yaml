@@ -6,7 +6,7 @@ steps:
   automapSubstitutions: true
 
 - id: delay-20-seconds
-  name: 'delay'
+  name: 'gcr.io/cloud-builders/gcloud'
   script: |
     sleep 20
     
