@@ -8,7 +8,7 @@ steps:
 - id: deploy-cloud-run
   name: 'gcr.io/cloud-builders/gcloud'
   script: |
-    gcloud run deploy lotto --image us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto@sha256:4ca5a7f29f2867e9653830fa141d322632c354d09b5467089057c2dcb57e9d75 --region us-west2 --platform managed --allow-unauthenticated
+    gcloud run deploy lotto --image us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto:latest --region us-west2 --platform managed --allow-unauthenticated
   
 images:
 - 'us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto:latest'
