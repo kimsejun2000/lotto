@@ -1,19 +1,16 @@
 steps:
-- id: build-docker-images
-  name: 'gcr.io/cloud-builders/docker'
-  script: |
-    docker build -t us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto:latest .
-  automapSubstitutions: true
-
-- id: delay-20-seconds
-  name: 'gcr.io/cloud-builders/gcloud'
-  script: |
-    sleep 20
-    
-- id: deploy-cloud-run
-  name: 'gcr.io/cloud-builders/gcloud'
-  script: |
-    gcloud run deploy lotto --image us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto:latest --region us-west2 --platform managed --allow-unauthenticated
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto:latest', '.']
+  
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto:latest']
+  
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'lotto', '--image', 'us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto:latest', '--region', 'us-west2']
   
 images:
 - 'us-west2-docker.pkg.dev/dockerk8sstudy/lotto/lotto:latest'
